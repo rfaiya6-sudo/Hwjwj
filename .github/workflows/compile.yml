@@ -1,6 +1,7 @@
-name: Compile CLEO Script
+name: Compile CLEO
 
 on:
+  push:
   workflow_dispatch:
 
 jobs:
@@ -12,13 +13,13 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
 
       - name: Compile
         run: |
-          npx -p @sannybuilder/cli sanny compile SA.FirstPerson.txt --output SA.FirstPerson.csi --game sa_mobile
+          npx --yes @sannybuilder/cli compile SA.FirstPerson.txt -o SA.FirstPerson.csi -g sa_mobile
 
-      - name: Upload Artifact
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: cleo-compiled
