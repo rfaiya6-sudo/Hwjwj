@@ -1,0 +1,29 @@
+name: Compile CLEO Script
+
+on:
+  push:
+    paths:
+      - '**.txt'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Sanny Builder CLI
+        run: |
+          npm install -g sanny
+
+      - name: Compile .txt to .csi
+        run: |
+          sanny compile SA.FirstPerson.txt --output SA.FirstPerson.csi --game sa_mobile
+
+      - name: Upload .csi Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: cleo-compiled
+          path: SA.FirstPerson.csi
+          
