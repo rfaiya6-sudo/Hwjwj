@@ -13,13 +13,14 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Sanny Builder CLI
-        run: |
-          npm install -g sanny
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Compile .txt to .csi
         run: |
-          sanny compile SA.FirstPerson.txt --output SA.FirstPerson.csi --game sa_mobile
+          npx sanny compile SA.FirstPerson.txt --output SA.FirstPerson.csi --game sa_mobile
 
       - name: Upload .csi Artifact
         uses: actions/upload-artifact@v4
