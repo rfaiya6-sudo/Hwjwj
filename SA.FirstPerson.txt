@@ -1,0 +1,51 @@
+{$CLEO .csi}
+0000:
+
+:Version_check_200
+wait 0
+0DD6: 2@ = get_game_version
+if and
+80DF:   not actor $PLAYER_ACTOR driving
+0039:   2@ == 17
+jf @Version_check_108
+0DD8: 0@ = read_mem_addr 0x3F4342 size 4 fix_ib 1
+0DD8: 1@ = read_mem_addr 0x3F4082 size 4 fix_ib 1
+0DD9: write_mem_addr 0x3F4342 value 0xBDA1F736 size 4 add_ib 1 protect 1 //Patch delay
+0DD9: write_mem_addr 0x3F4082 value 0x8000F3AF size 4 add_ib 1 protect 1 //Script Patch
+0159: camera_on_ped $PLAYER_ACTOR mode 8 switchstyle 2
+jump @FPS_ALDIANSYAH
+
+:Version_check_108
+if and
+80DF:   not actor $PLAYER_ACTOR driving
+0039:   2@ == 13
+jf @end_thread
+0DD8: 0@ = read_mem_addr 0x39877C size 4 fix_ib 1
+0DD8: 1@ = read_mem_addr 0x3987C6 size 4 fix_ib 1
+0DD9: write_mem_addr 0x39877C value 0xBB8CF749 size 4 add_ib 1 protect 1 //Patch delay
+0DD9: write_mem_addr 0x3987C6 value 0x8000F3AF size 4 add_ib 1 protect 1 //Script Patch
+0159: camera_on_ped $PLAYER_ACTOR mode 8 switchstyle 2
+jump @FPS_ALDIANSYAH
+
+:FPS_ALDIANSYAH
+wait 0
+041D: set_camera_near_clip 0.18
+0337: set_actor $PLAYER_ACTOR visibility 1
+0922: set_camera_zoom_from 80.0 to 80.0 timelimit 500 smooth_transition 0
+
+// SYNC BADAN CJ DENGAN KAMERA (Bikin ga bisa putar leher 360 deg)
+0055: 3@ = get_camera_heading
+0173: set_actor $PLAYER_ACTOR z_angle 3@
+
+if and
+0A53:   is_widget_doubletapped 18
+0A52:   is_widget_released 18
+jf @FPS_ALDIANSYAH
+0DD9: write_mem_addr 0x3F4342 value 0@ size 4 add_ib 1 protect 1 //Patch normal
+0DD9: write_mem_addr 0x3F4082 value 1@ size 4 add_ib 1 protect 1 //Script Patch normal
+02EB: restore_camera_with_jumpcut
+041D: set_camera_near_clip 0.1
+end_thread
+
+:end_thread
+end_thread
