@@ -1,28 +1,24 @@
 name: Compile CLEO Script
 
 on:
-  push:
-    paths:
-      - '**.txt'
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
 
-      - name: Compile .txt to .csi
+      - name: Compile
         run: |
-          npx sanny compile SA.FirstPerson.txt --output SA.FirstPerson.csi --game sa_mobile
+          npx -p @sannybuilder/cli sanny compile SA.FirstPerson.txt --output SA.FirstPerson.csi --game sa_mobile
 
-      - name: Upload .csi Artifact
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: cleo-compiled
